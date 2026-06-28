@@ -1,7 +1,7 @@
 {
   "name": "IronTrinity",
   "short_name": "IronTrinity",
-  "start_url": "gylog_patched.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0F1117",
   "theme-color": "#0F1117",
