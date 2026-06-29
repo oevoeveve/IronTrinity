@@ -672,33 +672,83 @@ html, body {
         </button>
       </div>
 
-      <!-- Dag totaal ring + macros -->
-      <div class="kcal-card">
-        <div class="ring-wrap">
-          <svg width="88" height="88" viewBox="0 0 88 88">
-            <circle class="ring-bg" cx="44" cy="44" r="36" fill="none" stroke-width="7"/>
-            <circle class="ring-fill" id="meal-ring" cx="44" cy="44" r="36" fill="none" stroke-width="7" stroke-dasharray="226" stroke-dashoffset="226"/>
-          </svg>
-          <div class="ring-center"><div class="ring-kcal" id="meal-ring-kcal">0</div><div class="ring-unit">kcal</div></div>
+      <!-- MACRO METER: resterend + balken -->
+      <div class="card" style="margin:0 16px 12px;padding:16px">
+        <!-- Kcal resterend groot -->
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:4px">Resterend</div>
+          <div style="display:flex;align-items:baseline;justify-content:center;gap:6px">
+            <span id="meal-kcal-rest" style="font-size:36px;font-weight:700;letter-spacing:-1px;font-variant-numeric:tabular-nums;color:var(--text)">—</span>
+            <span style="font-size:14px;color:var(--text2)">kcal</span>
+          </div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">van <span id="meal-kcal-doel">2400</span> · gegeten: <span id="meal-kcal-gegeten">0</span></div>
+          <!-- Hoofd kcal balk -->
+          <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:10px">
+            <div id="meal-bar-kcal-main" style="height:100%;width:0%;border-radius:3px;background:var(--accent);transition:width .5s ease"></div>
+          </div>
         </div>
-        <div class="kcal-details">
-          <div class="card-label" style="margin-bottom:6px">Doel: <span id="meal-kcal-doel">2400</span> kcal</div>
-          <div class="macro-row"><span class="macro-name">Eiwit</span><span class="macro-val" id="meal-eiwit-val">0 / 160g</span></div>
-          <div class="macro-bar-wrap"><div class="macro-bar" id="meal-bar-eiwit" style="width:0%;background:#3B82F6"></div></div>
-          <div class="macro-row"><span class="macro-name">Koolhyd.</span><span class="macro-val" id="meal-koolhyd-val">0 / 250g</span></div>
-          <div class="macro-bar-wrap"><div class="macro-bar" id="meal-bar-koolhyd" style="width:0%;background:#F59E0B"></div></div>
-          <div class="macro-row" style="margin-bottom:0"><span class="macro-name">Vet</span><span class="macro-val" id="meal-vet-val">0 / 70g</span></div>
-          <div class="macro-bar-wrap" style="margin-bottom:0"><div class="macro-bar" id="meal-bar-vet" style="width:0%;background:#22C55E"></div></div>
+
+        <!-- Drie macro balken -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <!-- Eiwit -->
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+              <span style="color:var(--text2);font-weight:600">Eiwit</span>
+              <span id="meal-eiwit-rest" style="font-weight:700;color:#3B82F6;font-variant-numeric:tabular-nums">—</span>
+            </div>
+            <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+              <div id="meal-bar-eiwit" style="height:100%;width:0%;border-radius:3px;background:#3B82F6;transition:width .5s ease"></div>
+            </div>
+            <div style="font-size:10px;color:var(--text3);margin-top:3px;text-align:center"><span id="meal-eiwit-van">0</span>g van <span id="meal-eiwit-doel-val">160</span>g</div>
+          </div>
+          <!-- Koolhyd -->
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+              <span style="color:var(--text2);font-weight:600">Koolh.</span>
+              <span id="meal-koolhyd-rest" style="font-weight:700;color:#F59E0B;font-variant-numeric:tabular-nums">—</span>
+            </div>
+            <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+              <div id="meal-bar-koolhyd" style="height:100%;width:0%;border-radius:3px;background:#F59E0B;transition:width .5s ease"></div>
+            </div>
+            <div style="font-size:10px;color:var(--text3);margin-top:3px;text-align:center"><span id="meal-koolhyd-van">0</span>g van <span id="meal-koolhyd-doel-val">250</span>g</div>
+          </div>
+          <!-- Vet -->
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
+              <span style="color:var(--text2);font-weight:600">Vet</span>
+              <span id="meal-vet-rest" style="font-weight:700;color:#22C55E;font-variant-numeric:tabular-nums">—</span>
+            </div>
+            <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden">
+              <div id="meal-bar-vet" style="height:100%;width:0%;border-radius:3px;background:#22C55E;transition:width .5s ease"></div>
+            </div>
+            <div style="font-size:10px;color:var(--text3);margin-top:3px;text-align:center"><span id="meal-vet-van">0</span>g van <span id="meal-vet-doel-val">70</span>g</div>
+          </div>
         </div>
+
+        <!-- Coach advies -->
+        <div id="meal-coach" style="margin-top:12px;display:none;padding:8px 12px;border-radius:8px;font-size:12px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:#93c5fd"></div>
       </div>
 
-      <!-- Maaltijd momenten -->
-      <div id="meal-momenten"></div>
+      <!-- Snelle favorieten rij -->
+      <div id="meal-snelle-fav" style="display:none;padding:0 16px;margin-bottom:8px">
+        <div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Snel toevoegen</div>
+        <div id="meal-fav-chips" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none"></div>
+      </div>
 
-      <button class="btn-secondary" onclick="openMaaltijdModal()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Maaltijd toevoegen
-      </button>
+      <!-- Tijdlijn maaltijden lijst -->
+      <div class="section-head">
+        <h2>Vandaag gegeten</h2>
+        <button class="see-all" onclick="openMaaltijdModal()" style="display:flex;align-items:center;gap:4px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Toevoegen
+        </button>
+      </div>
+      <div id="meal-tijdlijn" style="padding:0 16px;margin-bottom:80px">
+        <div style="text-align:center;color:var(--text2);font-size:13px;padding:24px 0">
+          <div style="font-size:28px;margin-bottom:8px">🍽️</div>
+          Nog niets gelogd vandaag
+        </div>
+      </div>
     </div>
 
     <!-- ══ GEWICHT ══ -->
@@ -980,33 +1030,72 @@ html, body {
 </div>
 
 <!-- ══ MAALTIJD TOEVOEGEN MODAL ══ -->
-<div id="maaltijd-modal" style="display:none;position:fixed;inset:0;background:rgba(15,17,23,.96);z-index:300;flex-direction:column;padding:24px 16px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px);overflow-y:auto;">
-  <div style="font-size:20px;font-weight:700;margin-bottom:20px">Maaltijd toevoegen</div>
-  <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Moment</div>
-  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-    <button class="dag-chip selected" id="mom-ontbijt" onclick="selectMoment('ontbijt')">Ontbijt</button>
-    <button class="dag-chip" id="mom-lunch" onclick="selectMoment('lunch')">Lunch</button>
-    <button class="dag-chip" id="mom-diner" onclick="selectMoment('diner')">Diner</button>
-    <button class="dag-chip" id="mom-snacks" onclick="selectMoment('snacks')">Snacks</button>
+<div id="maaltijd-modal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:300;flex-direction:column;overflow-y:auto">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:1">
+    <button class="icon-btn" onclick="closeMaaltijdModal()">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div style="font-size:18px;font-weight:700">Maaltijd toevoegen</div>
   </div>
-  <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Favorieten</div>
-  <div id="favorieten-row" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none">
-    <div style="font-size:13px;color:var(--text2);padding:8px 0">Geen favorieten nog</div>
+
+  <div style="padding:16px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px)">
+
+    <!-- Recente maaltijden als snelle keuze -->
+    <div id="modal-recente-wrap" style="margin-bottom:16px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Recent</div>
+      <div id="modal-recente-lijst" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+
+    <div style="height:1px;background:var(--border);margin-bottom:16px"></div>
+
+    <!-- Naam -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">Naam maaltijd</div>
+    <input id="meal-naam" type="text" placeholder="Bijv. Post-workout shake"
+      style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;padding:11px 14px;outline:none;margin-bottom:14px;font-family:inherit"
+      oninput="zoekRecenteMaaltijd(this.value)">
+
+    <!-- Ingrediënten notitie -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">Ingrediënten / notitie <span style="font-weight:400;color:var(--text3)">(optioneel)</span></div>
+    <textarea id="meal-ingredienten" placeholder="Bijv: 80g havermout, 200ml melk, 1 banaan..."
+      style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;padding:10px 14px;outline:none;margin-bottom:14px;font-family:inherit;resize:none;height:60px"></textarea>
+
+    <!-- Macros grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600">Kcal</div>
+        <input id="meal-kcal" type="number" inputmode="numeric" placeholder="0"
+          style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:18px;font-weight:700;padding:11px 14px;outline:none;text-align:center">
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600">Eiwit (g)</div>
+        <input id="meal-eiwit-in" type="number" inputmode="decimal" placeholder="0"
+          style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:#3B82F6;font-size:18px;font-weight:700;padding:11px 14px;outline:none;text-align:center">
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600">Koolhyd. (g)</div>
+        <input id="meal-koolhyd-in" type="number" inputmode="decimal" placeholder="0"
+          style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:#F59E0B;font-size:18px;font-weight:700;padding:11px 14px;outline:none;text-align:center">
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600">Vet (g)</div>
+        <input id="meal-vet-in" type="number" inputmode="decimal" placeholder="0"
+          style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:#22C55E;font-size:18px;font-weight:700;padding:11px 14px;outline:none;text-align:center">
+      </div>
+    </div>
+
+    <!-- Favoriet checkbox -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius)">
+      <input type="checkbox" id="meal-favoriet" style="width:18px;height:18px;accent-color:var(--accent)">
+      <label for="meal-favoriet" style="font-size:14px;color:var(--text2)">Opslaan als favoriet (snel toevoegen)</label>
+    </div>
+
+    <button class="btn-primary" onclick="saveMaaltijd()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Opslaan
+    </button>
   </div>
-  <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Naam</div>
-  <input id="meal-naam" type="text" placeholder="Bijv. Havermout + ei" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;padding:11px 14px;outline:none;margin-bottom:16px;font-family:inherit">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-    <div><div style="font-size:12px;color:var(--text2);margin-bottom:6px">Kcal</div><input id="meal-kcal" type="number" inputmode="numeric" placeholder="0" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;font-weight:600;padding:11px 14px;outline:none;text-align:center"></div>
-    <div><div style="font-size:12px;color:var(--text2);margin-bottom:6px">Eiwit (g)</div><input id="meal-eiwit-in" type="number" inputmode="decimal" placeholder="0" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;font-weight:600;padding:11px 14px;outline:none;text-align:center"></div>
-    <div><div style="font-size:12px;color:var(--text2);margin-bottom:6px">Koolhyd. (g)</div><input id="meal-koolhyd-in" type="number" inputmode="decimal" placeholder="0" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;font-weight:600;padding:11px 14px;outline:none;text-align:center"></div>
-    <div><div style="font-size:12px;color:var(--text2);margin-bottom:6px">Vet (g)</div><input id="meal-vet-in" type="number" inputmode="decimal" placeholder="0" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:15px;font-weight:600;padding:11px 14px;outline:none;text-align:center"></div>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
-    <input type="checkbox" id="meal-favoriet" style="width:18px;height:18px;accent-color:var(--accent)">
-    <label for="meal-favoriet" style="font-size:14px;color:var(--text2)">Opslaan als favoriet</label>
-  </div>
-  <button class="btn-primary" onclick="saveMaaltijd()">Opslaan</button>
-  <button class="btn-secondary" style="margin-top:8px" onclick="closeMaaltijdModal()">Annuleer</button>
 </div>
 
 <!-- ══ GEWICHT TOEVOEGEN MODAL ══ -->
@@ -1889,118 +1978,327 @@ let vandaagMeals = [];
 let favorieten   = [];
 try { favorieten = JSON.parse(localStorage.getItem("gl_fav") || "[]"); } catch(e) {}
 
-function openMaaltijdModal() {
-  document.getElementById("maaltijd-modal").style.display = "flex";
-  ["meal-naam","meal-kcal","meal-eiwit-in","meal-koolhyd-in","meal-vet-in"].forEach(id => { const el=document.getElementById(id); if(el) el.value=""; });
-  if(document.getElementById("meal-favoriet")) document.getElementById("meal-favoriet").checked = false;
-  mealMoment = "ontbijt";
-  ["ontbijt","lunch","diner","snacks"].forEach(mo => {
-     if(document.getElementById("mom-"+mo)) document.getElementById("mom-"+mo).classList.toggle("selected", mo==="ontbijt");
-  });
-  renderFavorieten();
-}
-function closeMaaltijdModal() { document.getElementById("maaltijd-modal").style.display = "none"; }
+// ── MODAL OPENEN/SLUITEN ──────────────────────────────
+function openMaaltijdModal(prefillNaam) {
+  const modal = document.getElementById("maaltijd-modal");
+  modal.style.display = "flex";
+  document.getElementById("meal-naam").value = prefillNaam || "";
+  document.getElementById("meal-kcal").value = "";
+  document.getElementById("meal-eiwit-in").value = "";
+  document.getElementById("meal-koolhyd-in").value = "";
+  document.getElementById("meal-vet-in").value = "";
+  document.getElementById("meal-ingredienten").value = "";
+  document.getElementById("meal-favoriet").checked = false;
 
-function selectMoment(mo) {
-  mealMoment = mo;
-  ["ontbijt","lunch","diner","snacks"].forEach(m => {
-     if(document.getElementById("mom-"+m)) document.getElementById("mom-"+m).classList.toggle("selected", m===mo);
-  });
+  // Als naam al ingevuld (bv vanuit favoriet): zoek meteen op
+  if (prefillNaam) zoekRecenteMaaltijd(prefillNaam);
+  else renderRecenteModal();
 }
 
-function renderFavorieten() {
-  const row = document.getElementById("favorieten-row");
-  if(!row) return;
-  if (!favorieten.length) { row.innerHTML = '<div style="font-size:13px;color:var(--text2);padding:8px 0">Geen favorieten nog</div>'; return; }
-  row.innerHTML = favorieten.map((f,i) =>
-    `<div onclick="vulFavoriet(${i})" style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0">${f.naam}<br><span style="color:var(--text2)">${f.kcal} kcal</span></div>`
-  ).join("");
+function closeMaaltijdModal() {
+  document.getElementById("maaltijd-modal").style.display = "none";
 }
 
-function vulFavoriet(i) {
-  const f = favorieten[i];
-  if(document.getElementById("meal-naam")) document.getElementById("meal-naam").value       = f.naam;
-  if(document.getElementById("meal-kcal")) document.getElementById("meal-kcal").value       = f.kcal;
-  if(document.getElementById("meal-eiwit-in")) document.getElementById("meal-eiwit-in").value   = f.eiwit_g || "";
-  if(document.getElementById("meal-koolhyd-in")) document.getElementById("meal-koolhyd-in").value = f.koolhyd_g || "";
-  if(document.getElementById("meal-vet-in")) document.getElementById("meal-vet-in").value     = f.vet_g || "";
+// ── RECENTE MAALTIJDEN IN MODAL ───────────────────────
+function renderRecenteModal() {
+  const el = document.getElementById("modal-recente-lijst");
+  const wrap = document.getElementById("modal-recente-wrap");
+  if (!vandaagMeals.length && !favorieten.length) {
+    wrap.style.display = "none"; return;
+  }
+  wrap.style.display = "block";
+  // Unieke namen: favorieten eerste, dan vandaag
+  const gezien = new Set();
+  const opties = [...favorieten, ...vandaagMeals].filter(m => {
+    if (gezien.has(m.naam)) return false;
+    gezien.add(m.naam); return true;
+  }).slice(0, 5);
+
+  el.innerHTML = opties.map(m => `
+    <div onclick="vulMaaltijdIn('${m.naam.replace(/'/g,"\\'")}',${m.kcal||0},${m.eiwit_g||0},${m.koolhyd_g||0},${m.vet_g||0})"
+      style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--surface2);border-radius:var(--radius);cursor:pointer">
+      <div>
+        <div style="font-size:14px;font-weight:500">${m.naam}</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">${m.kcal||0} kcal · ${m.eiwit_g||0}g eiwit</div>
+      </div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>`).join("");
 }
 
+function zoekRecenteMaaltijd(naam) {
+  if (!naam || naam.length < 2) { renderRecenteModal(); return; }
+  const q = naam.toLowerCase();
+  const gezien = new Set();
+  const matches = [...favorieten, ...vandaagMeals].filter(m => {
+    if (gezien.has(m.naam)) return false;
+    gezien.add(m.naam);
+    return m.naam.toLowerCase().includes(q);
+  }).slice(0, 3);
+
+  const el = document.getElementById("modal-recente-lijst");
+  const wrap = document.getElementById("modal-recente-wrap");
+  if (!matches.length) { wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  el.innerHTML = matches.map(m => `
+    <div onclick="vulMaaltijdIn('${m.naam.replace(/'/g,"\\'")}',${m.kcal||0},${m.eiwit_g||0},${m.koolhyd_g||0},${m.vet_g||0})"
+      style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:var(--radius);cursor:pointer">
+      <div>
+        <div style="font-size:14px;font-weight:500">${m.naam}</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">${m.kcal||0} kcal · ${m.eiwit_g||0}g eiwit</div>
+      </div>
+      <span style="font-size:11px;color:var(--accent);font-weight:600">Kies →</span>
+    </div>`).join("");
+}
+
+function vulMaaltijdIn(naam, kcal, eiwit, koolhyd, vet) {
+  document.getElementById("meal-naam").value = naam;
+  document.getElementById("meal-kcal").value = kcal || "";
+  document.getElementById("meal-eiwit-in").value = eiwit || "";
+  document.getElementById("meal-koolhyd-in").value = koolhyd || "";
+  document.getElementById("meal-vet-in").value = vet || "";
+  document.getElementById("modal-recente-wrap").style.display = "none";
+}
+
+// ── MAALTIJD OPSLAAN ──────────────────────────────────
 async function saveMaaltijd() {
-  const naamEl = document.getElementById("meal-naam");
-  const naam = naamEl ? naamEl.value.trim() : "";
-  const kcal = parseFloat(document.getElementById("meal-kcal")?.value) || 0;
-  const eiwit = parseFloat(document.getElementById("meal-eiwit-in")?.value) || 0;
-  const koolhyd = parseFloat(document.getElementById("meal-koolhyd-in")?.value) || 0;
-  const vet = parseFloat(document.getElementById("meal-vet-in")?.value) || 0;
-  const favEl = document.getElementById("meal-favoriet");
-  const fav = favEl ? favEl.checked : false;
+  const naam    = document.getElementById("meal-naam").value.trim();
+  const kcal    = parseFloat(document.getElementById("meal-kcal").value) || 0;
+  const eiwit   = parseFloat(document.getElementById("meal-eiwit-in").value) || 0;
+  const koolhyd = parseFloat(document.getElementById("meal-koolhyd-in").value) || 0;
+  const vet     = parseFloat(document.getElementById("meal-vet-in").value) || 0;
+  const fav     = document.getElementById("meal-favoriet").checked;
 
   if (!naam) { showToast("Vul een naam in"); return; }
-  if (!kcal) { showToast("Vul kcal in"); return; }
-  const data = { datum:toYMD(new Date()), maaltijd_moment:mealMoment, naam, kcal, eiwit_g:eiwit, koolhyd_g:koolhyd, vet_g:vet, vezels_g:"", favoriet:fav?1:0, notitie:"" };
+  if (!kcal)  { showToast("Vul kcal in"); return; }
+
+  const data = {
+    datum: toYMD(new Date()), maaltijd_moment: mealMoment,
+    naam, kcal, eiwit_g: eiwit, koolhyd_g: koolhyd, vet_g: vet,
+    vezels_g: "", favoriet: fav ? 1 : 0, notitie: ""
+  };
+
   if (fav) {
     favorieten = favorieten.filter(f => f.naam !== naam);
-    favorieten.unshift({ naam, kcal, eiwit_g:eiwit, koolhyd_g:koolhyd, vet_g:vet });
+    favorieten.unshift({ naam, kcal, eiwit_g: eiwit, koolhyd_g: koolhyd, vet_g: vet });
     if (favorieten.length > 20) favorieten.pop();
     try { localStorage.setItem("gl_fav", JSON.stringify(favorieten)); } catch(e) {}
   }
+
   try {
-    await apiPost({ action:"saveMaaltijd", data });
+    await apiPost({ action: "saveMaaltijd", data });
     vandaagMeals.push(data);
     closeMaaltijdModal();
-    renderMaaltijden();
-    updateMaaltijdRing();
-    showToast("Maaltijd opgeslagen!");
-  } catch(err) { showToast("Fout: " + err.message); }
-}
-
-async function loadMaaltijden() {
-  if(document.getElementById("meal-datum-sub")) document.getElementById("meal-datum-sub").textContent = formatDate(new Date());
-  if(document.getElementById("meal-kcal-doel")) document.getElementById("meal-kcal-doel").textContent = DOELEN.kcal;
-  vandaagMeals = [];
-  renderMaaltijden();
-  updateMaaltijdRing();
-}
-
-function renderMaaltijden() {
-  const el = document.getElementById("meal-momenten");
-  if(!el) return;
-  const momenten = ["ontbijt","lunch","diner","snacks"];
-  const labels   = { ontbijt:"Ontbijt", lunch:"Lunch", diner:"Diner", snacks:"Snacks" };
-  el.innerHTML = momenten.map(mo => {
-    const items  = vandaagMeals.filter(m => m.maaltijd_moment === mo);
-    const totaal = items.reduce((s,m) => s+(parseFloat(m.kcal)||0), 0);
-    const rows   = items.length
-      ? items.map(m => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px"><span>${m.naam}</span><span style="color:var(--text2)">${m.kcal} kcal</span></div>`).join("")
-      : `<div style="font-size:13px;color:var(--text3);padding:6px 0">Niets gelogd</div>`;
-    return `<div class="section-head"><h2>${labels[mo]}</h2>${totaal>0?`<span style="font-size:13px;font-weight:600;color:var(--text2)">${Math.round(totaal)} kcal</span>`:""}</div>
-    <div class="card">${rows}<button onclick="openMaaltijdModal();selectMoment('${mo}')" style="width:100%;background:none;border:none;color:var(--accent);font-size:13px;font-weight:500;padding:8px 0;cursor:pointer;text-align:left;margin-top:4px">+ Toevoegen</button></div>`;
-  }).join("");
-}
-
-function updateMaaltijdRing() {
-  const totKcal    = vandaagMeals.reduce((s,m)=>s+(parseFloat(m.kcal)||0),0);
-  const totEiwit   = vandaagMeals.reduce((s,m)=>s+(parseFloat(m.eiwit_g)||0),0);
-  const totKoolhyd = vandaagMeals.reduce((s,m)=>s+(parseFloat(m.koolhyd_g)||0),0);
-  const totVet     = vandaagMeals.reduce((s,m)=>s+(parseFloat(m.vet_g)||0),0);
-  const pct = Math.min(totKcal/DOELEN.kcal,1);
-  const ring = document.getElementById("meal-ring");
-  if(ring) {
-    ring.style.strokeDashoffset = 226 - pct*226;
-    ring.style.stroke = pct>=1?"#EF4444":pct>=.85?"#F59E0B":"#3B82F6";
+    renderTijdlijn();
+    updateMaaltijdMeter();
+    updateSnelleFav();
+    showToast("✅ " + naam + " toegevoegd!");
+  } catch(err) {
+    showToast("❌ " + err.message);
   }
-  if(document.getElementById("meal-ring-kcal")) document.getElementById("meal-ring-kcal").textContent = Math.round(totKcal);
-  if(document.getElementById("meal-eiwit-val")) document.getElementById("meal-eiwit-val").textContent  = Math.round(totEiwit)+" / "+DOELEN.eiwit+"g";
-  if(document.getElementById("meal-koolhyd-val")) document.getElementById("meal-koolhyd-val").textContent= Math.round(totKoolhyd)+" / "+DOELEN.koolhyd+"g";
-  if(document.getElementById("meal-vet-val")) document.getElementById("meal-vet-val").textContent    = Math.round(totVet)+" / "+DOELEN.vet+"g";
-  if(document.getElementById("meal-bar-eiwit")) document.getElementById("meal-bar-eiwit").style.width  = Math.min(totEiwit/DOELEN.eiwit*100,100)+"%";
-  if(document.getElementById("meal-bar-koolhyd")) document.getElementById("meal-bar-koolhyd").style.width= Math.min(totKoolhyd/DOELEN.koolhyd*100,100)+"%";
-  if(document.getElementById("meal-bar-vet")) document.getElementById("meal-bar-vet").style.width    = Math.min(totVet/DOELEN.vet*100,100)+"%";
-  updateRing(totKcal, DOELEN.kcal);
-  updateMacro("macro-eiwit","bar-eiwit",totEiwit,DOELEN.eiwit);
-  updateMacro("macro-koolhyd","bar-koolhyd",totKoolhyd,DOELEN.koolhyd);
-  updateMacro("macro-vet","bar-vet",totVet,DOELEN.vet);
+}
+
+// ── MAALTIJDEN LADEN ──────────────────────────────────
+async function loadMaaltijden() {
+  document.getElementById("meal-datum-sub").textContent = formatDate(new Date());
+  document.getElementById("meal-kcal-doel").textContent = DOELEN.kcal;
+  document.getElementById("meal-eiwit-doel-val").textContent  = DOELEN.eiwit;
+  document.getElementById("meal-koolhyd-doel-val").textContent = DOELEN.koolhyd;
+  document.getElementById("meal-vet-doel-val").textContent    = DOELEN.vet;
+  vandaagMeals = [];
+  renderTijdlijn();
+  updateMaaltijdMeter();
+  updateSnelleFav();
+}
+
+// ── TIJDLIJN RENDEREN ────────────────────────────────
+function renderTijdlijn() {
+  const el = document.getElementById("meal-tijdlijn");
+  if (!vandaagMeals.length) {
+    el.innerHTML = `<div style="text-align:center;color:var(--text2);font-size:13px;padding:24px 0">
+      <div style="font-size:28px;margin-bottom:8px">🍽️</div>Nog niets gelogd vandaag</div>`;
+    return;
+  }
+
+  // Groepeer op moment voor weergave
+  const volgorde = ["ontbijt","lunch","diner","snacks",""];
+  const labels   = { ontbijt:"🌅 Ontbijt", lunch:"☀️ Lunch", diner:"🌙 Diner", snacks:"🍎 Snacks" };
+  const perMoment = {};
+  vandaagMeals.forEach(m => {
+    const k = m.maaltijd_moment || "";
+    if (!perMoment[k]) perMoment[k] = [];
+    perMoment[k].push(m);
+  });
+
+  el.innerHTML = Object.entries(perMoment).map(([moment, items]) => {
+    const totKcal = items.reduce((s,m) => s + (parseFloat(m.kcal)||0), 0);
+    const label = labels[moment] || moment || "Overig";
+    return `
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:12px;font-weight:600;color:var(--text2)">${label}</div>
+          <div style="font-size:12px;color:var(--text2)">${Math.round(totKcal)} kcal</div>
+        </div>
+        ${items.map((m, mi) => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.naam}</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:2px">${m.eiwit_g||0}g eiwit · ${m.koolhyd_g||0}g koolh. · ${m.vet_g||0}g vet</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;margin-left:10px">
+              <div style="font-size:15px;font-weight:700;font-variant-numeric:tabular-nums">${m.kcal||0}</div>
+              <div style="font-size:10px;color:var(--text2)">kcal</div>
+            </div>
+          </div>`).join("")}
+        <button onclick="openMaaltijdModal();mealMoment='${moment || 'snacks'}'" 
+          style="width:100%;padding:8px;border:1px dashed var(--border);border-radius:var(--radius);background:none;color:var(--text2);font-size:12px;cursor:pointer">
+          + Toevoegen aan ${label.replace(/[^\w\s]/g,'').trim()}
+        </button>
+      </div>`;
+  }).join("") + `
+    <button onclick="openMaaltijdModal()" style="width:100%;padding:12px;background:none;border:1.5px dashed var(--border);border-radius:var(--radius);color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;margin-top:4px">
+      + Nieuwe maaltijd toevoegen
+    </button>`;
+}
+
+// ── MACRO METER UPDATE ────────────────────────────────
+function updateMaaltijdMeter() {
+  const totKcal    = vandaagMeals.reduce((s,m) => s + (parseFloat(m.kcal)||0), 0);
+  const totEiwit   = vandaagMeals.reduce((s,m) => s + (parseFloat(m.eiwit_g)||0), 0);
+  const totKoolhyd = vandaagMeals.reduce((s,m) => s + (parseFloat(m.koolhyd_g)||0), 0);
+  const totVet     = vandaagMeals.reduce((s,m) => s + (parseFloat(m.vet_g)||0), 0);
+
+  const dKcal    = DOELEN.kcal    || 2400;
+  const dEiwit   = DOELEN.eiwit   || 160;
+  const dKoolhyd = DOELEN.koolhyd || 250;
+  const dVet     = DOELEN.vet     || 70;
+
+  // Resterend (negatief = overschreden)
+  const restKcal    = dKcal    - Math.round(totKcal);
+  const restEiwit   = dEiwit   - Math.round(totEiwit);
+  const restKoolhyd = dKoolhyd - Math.round(totKoolhyd);
+  const restVet     = dVet     - Math.round(totVet);
+
+  // Kcal resterend groot display
+  const kcalRestEl = document.getElementById("meal-kcal-rest");
+  if (kcalRestEl) {
+    kcalRestEl.textContent = restKcal > 0 ? restKcal : "0";
+    kcalRestEl.style.color = restKcal < 0 ? "var(--red)" : restKcal < dKcal * 0.1 ? "var(--amber)" : "var(--text)";
+  }
+  const gegEl = document.getElementById("meal-kcal-gegeten");
+  if (gegEl) gegEl.textContent = Math.round(totKcal);
+  const doelEl = document.getElementById("meal-kcal-doel");
+  if (doelEl) doelEl.textContent = dKcal;
+
+  // Kcal hoofdbalk
+  const pctKcal = Math.min(totKcal / dKcal, 1);
+  const barKcal = document.getElementById("meal-bar-kcal-main");
+  if (barKcal) {
+    barKcal.style.width = (pctKcal * 100) + "%";
+    barKcal.style.background = pctKcal >= 1 ? "var(--red)" : pctKcal >= 0.9 ? "var(--amber)" : "var(--accent)";
+  }
+
+  // Macro balken met kleurcodering
+  function updateMacroBalk(id, barId, vanId, totaal, doel, kleur) {
+    const pct = Math.min(totaal / doel, 1.2);
+    const rest = doel - Math.round(totaal);
+    const restEl = document.getElementById(id);
+    if (restEl) {
+      restEl.textContent = (rest > 0 ? rest : "0") + "g";
+      restEl.style.color = rest < 0 ? "var(--red)" : kleur;
+    }
+    const bar = document.getElementById(barId);
+    if (bar) {
+      bar.style.width = Math.min(pct * 100, 100) + "%";
+      bar.style.background = pct >= 1 ? "var(--red)" : pct >= 0.85 ? "var(--amber)" : kleur;
+    }
+    const vanEl = document.getElementById(vanId);
+    if (vanEl) vanEl.textContent = Math.round(totaal);
+  }
+
+  updateMacroBalk("meal-eiwit-rest",   "meal-bar-eiwit",   "meal-eiwit-van",   totEiwit,   dEiwit,   "#3B82F6");
+  updateMacroBalk("meal-koolhyd-rest", "meal-bar-koolhyd", "meal-koolhyd-van", totKoolhyd, dKoolhyd, "#F59E0B");
+  updateMacroBalk("meal-vet-rest",     "meal-bar-vet",     "meal-vet-van",     totVet,     dVet,     "#22C55E");
+
+  // Update doel-labels
+  const eiDoel = document.getElementById("meal-eiwit-doel-val");
+  const khDoel = document.getElementById("meal-koolhyd-doel-val");
+  const vtDoel = document.getElementById("meal-vet-doel-val");
+  if (eiDoel) eiDoel.textContent = dEiwit;
+  if (khDoel) khDoel.textContent = dKoolhyd;
+  if (vtDoel) vtDoel.textContent = dVet;
+
+  // Coach advies
+  const coachEl = document.getElementById("meal-coach");
+  if (coachEl) {
+    let advies = "";
+    const pctEiwit = totEiwit / dEiwit;
+    const pctKcalVal = totKcal / dKcal;
+    if (pctEiwit < 0.5 && totKcal > 100) {
+      advies = "💡 Je ligt achter op eiwitten. Probeer een eiwitrijke snack zoals kwark, eieren of een proteïneshake.";
+    } else if (pctKcalVal > 0.9 && pctEiwit < 0.7) {
+      advies = "⚠️ Je zit bijna aan je calorielimiet maar je eiwitten zijn nog laag. Focus bij je volgende maaltijd op een pure eiwitbron.";
+    } else if (pctKcalVal >= 1) {
+      advies = "🔴 Je hebt je caloriedoel bereikt voor vandaag.";
+    } else if (pctEiwit >= 1 && pctKcalVal < 0.8) {
+      advies = "✅ Eiwitdoel gehaald! Vul aan met koolhydraten en vetten.";
+    }
+    coachEl.textContent = advies;
+    coachEl.style.display = advies ? "block" : "none";
+    if (advies.startsWith("✅")) {
+      coachEl.style.background = "rgba(34,197,94,.08)";
+      coachEl.style.borderColor = "rgba(34,197,94,.2)";
+      coachEl.style.color = "#86efac";
+    } else if (advies.startsWith("🔴")) {
+      coachEl.style.background = "rgba(239,68,68,.08)";
+      coachEl.style.borderColor = "rgba(239,68,68,.2)";
+      coachEl.style.color = "#fca5a5";
+    } else if (advies.startsWith("⚠️")) {
+      coachEl.style.background = "rgba(245,158,11,.08)";
+      coachEl.style.borderColor = "rgba(245,158,11,.2)";
+      coachEl.style.color = "#fcd34d";
+    } else {
+      coachEl.style.background = "rgba(59,130,246,.08)";
+      coachEl.style.borderColor = "rgba(59,130,246,.2)";
+      coachEl.style.color = "#93c5fd";
+    }
+  }
+
+  // Sync dashboard ring
+  updateRing(totKcal, dKcal);
+  updateMacro("macro-eiwit",   "bar-eiwit",   totEiwit,   dEiwit);
+  updateMacro("macro-koolhyd", "bar-koolhyd", totKoolhyd, dKoolhyd);
+  updateMacro("macro-vet",     "bar-vet",     totVet,     dVet);
+}
+
+// ── SNELLE FAVORIETEN CHIPS ───────────────────────────
+function updateSnelleFav() {
+  const wrap = document.getElementById("meal-snelle-fav");
+  const el   = document.getElementById("meal-fav-chips");
+  if (!wrap || !el) return;
+  if (!favorieten.length) { wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  el.innerHTML = favorieten.slice(0, 6).map(f =>
+    `<div onclick="snelToevoegen('${f.naam.replace(/'/g,"\\'")}',${f.kcal||0},${f.eiwit_g||0},${f.koolhyd_g||0},${f.vet_g||0})"
+      style="flex-shrink:0;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;white-space:nowrap">
+      <div style="font-size:12px;font-weight:500">${f.naam}</div>
+      <div style="font-size:10px;color:var(--text2)">${f.kcal} kcal</div>
+    </div>`
+  ).join("");
+}
+
+async function snelToevoegen(naam, kcal, eiwit, koolhyd, vet) {
+  const data = {
+    datum: toYMD(new Date()), maaltijd_moment: "snacks",
+    naam, kcal, eiwit_g: eiwit, koolhyd_g: koolhyd, vet_g: vet,
+    vezels_g: "", favoriet: 1, notitie: ""
+  };
+  try {
+    await apiPost({ action: "saveMaaltijd", data });
+    vandaagMeals.push(data);
+    renderTijdlijn();
+    updateMaaltijdMeter();
+    showToast("✅ " + naam + " toegevoegd!");
+  } catch(e) { showToast("❌ " + e.message); }
 }
 
 // ═══════════════════════════════════════════════════════
